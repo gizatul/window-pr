@@ -48,6 +48,6 @@ const modals = () => {
     bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close', false); //вызов ф-ии модал окна калькулятора
     bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
     // showModalByTime('.popup', 5000);
-    bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close');
+    bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
 };
 export default modals;
