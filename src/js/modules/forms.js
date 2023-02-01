@@ -1,10 +1,21 @@
 import checkNumInputs from "./checkNumInputs";
 
-const forms = () => {
-    const form = document.querySelectorAll('form');
+const forms = (state) => {
+
+    const form = document.querySelectorAll('form'),
+          windows = document.querySelectorAll('[data-modal]'),
+          inputs = document.querySelectorAll('input');
     
     //Введение в поле с телефоном только цифр
     checkNumInputs('input[name="user_phone"]');
+
+    //Ф-я для очищения полей
+    const clearInputs = () => {
+        inputs.forEach(item => {
+            item.value = '';
+        });
+    }
+
     //создание объекта с сообщениями
     const message = { 
         loading: 'Загрузка...',
@@ -30,6 +41,13 @@ const forms = () => {
             item.appendChild(statusMessage);
             // создание формдаты для отправки на сервер
             const formData = new FormData(item);
+
+            if (item.getAttribute('data-calc') === 'end') {  //проверка на необходимую нам форму(в данном случае калькулятор) - берем ту форму где кнопка рассчитать стоимость
+                for (let key in state) {
+                    formData.append(key, state[key]); //добавление (append) к стандартной форме formData(имени телефону) остальных данных с каалькулятора
+                }
+                
+            }
             //Выведение сообщений на страницу
             postData('assets/server.php', formData)
                 .then(res => {
@@ -38,11 +56,17 @@ const forms = () => {
                 })
                 .catch(() => statusMessage.textContent = message.failure) //плашка о неудаче
                 .finally(() => {
-                    item.reset();
+                    clearInputs(); //очищение полей после успешной/неуспешной отправки
                     setTimeout(() => {
                         statusMessage.remove(); //удаляем сообщение через 10 сек
                     }, 10000);
-                }); //очищение полей после успешной/неуспешной отправки
+                    windows.forEach(item => {
+                        item.style.display = 'none'; //закрытие всех окон после отправки/неотправки данных
+                    });
+                    for (let key in state) {
+                        delete state[key]; //очищение объекта
+                    }
+                }); 
         });
     });
 };

@@ -1,4 +1,4 @@
-const modals = () => {
+const modals = (state) => {
     function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
         const trigger = document.querySelectorAll(triggerSelector), //кнопка вызова окна
               modal = document .querySelector(modalSelector), // модал окно
@@ -6,10 +6,11 @@ const modals = () => {
               windows = document.querySelectorAll('[data-modal]'); // получаем все модальные окна чтобы их потом закрыть
 
         trigger.forEach(item => {
-            item.addEventListener('click', (e) => {
+            let event = item.addEventListener('click', (e) => {
                 if (e.target) {
                     e.preventDefault(); // отмена стандартного поведения браузера(если вдруг внутри ссылка, браузер по умол. перезагружает страницу)
                 }
+                
                 windows.forEach(item => { 
                     item.style.display = 'none'; //закрытие всех окон при нажатии "Далее" (сделано для калькулятора)
                 });
@@ -49,5 +50,6 @@ const modals = () => {
     bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
     // showModalByTime('.popup', 5000);
     bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
+    // bindModal('.popup_calc_profile_button', '.popup_calc_end', '[data-calc="end"] > button', false);
 };
 export default modals;
