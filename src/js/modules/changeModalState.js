@@ -9,10 +9,7 @@ const changeModalState = (state) => { //получаем все типы дан�
     //Валидация ширины и высоты(ввод только цифр)      
     checkNumInputs('#width');
     checkNumInputs('#height');
-
-    
-
-    
+        
     function bindActionToElems(event, elem, prop) { //на опред. элемент(elem) навязывает опред. ОС(event) и записывает в опред. св-во объекта state
         elem.forEach((item, i) => {
             item.addEventListener(event, () => {

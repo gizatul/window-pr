@@ -18,6 +18,19 @@ body {
   color: red;
 }
 
+.faded {
+  animation-name: faded;
+  animation-duration: 0.5s;
+}
+@keyframes faded {
+  from {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 a:hover {
   text-decoration: none;
 }
@@ -829,7 +842,8 @@ textarea:focus {
 /*Modals*/
 .popup,
 .popup_engineer,
-.popup_calc_end {
+.popup_calc_end,
+.popupImg {
   display: none;
   position: fixed;
   top: 0;
@@ -1750,6 +1764,7 @@ textarea:focus {
 
   .popup_calc_content .balcon_icons img {
     width: 20%;
+    cursor: pointer;
   }
 
   .popup_calc_content .big_img img {
