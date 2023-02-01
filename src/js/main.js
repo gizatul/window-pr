@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }; //состояние модал окна с калькулятором
 
     changeModalState(modalState); //передаем ссылку на объект modalstate
-    modals();
+    modals(modalState);
     tabs('.glazing_slider', '.glazing_block', '.glazing_content', 'active'); //табы для "ОСТЕКЛЕНИЕ БАЛКОНОВ И ЛОДЖИЙ"
     tabs('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click'); //.decoration_content > div > div - указание на прямых потомков, табы для "отделок"
     forms(modalState);
