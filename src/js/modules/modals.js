@@ -6,25 +6,16 @@ const modals = (state) => {
               modal = document .querySelector(modalSelector), // модал окно
               close = document.querySelector(closeSelector), // закрытие окна
               windows = document.querySelectorAll('[data-modal]'), // получаем все модальные окна чтобы их потом закрыть
-              scroll = calcScroll(); //получаем результат - ширина скролла
-              modal.classList.add('faded');
-
+              scroll = calcScroll();
+        
+        
+        modal.classList.add('faded'); //плавное появление модал окон
+              
         trigger.forEach(item => {
-            let event = item.addEventListener('click', (e) => {
+            item.addEventListener('click', (e) => {
                 if (e.target) {
                     e.preventDefault(); // отмена стандартного поведения браузера(если вдруг внутри ссылка, браузер по умол. перезагружает страницу)
-                }
-                //Если не заполнены поля модальных окон, то кнопка "Далее" не работает 
-                if (modal.classList.contains('popup_calc_profile')) {
-					if (!state.form === undefined || !state.width || !state.height) { //если данные false в объекте state
-						event.removeEventListener();
-					}
-				}
-                if (modal.classList.contains('popup_calc_end')) {
-					if (!state.type || !state.profile) {
-						event.removeEventListener();
-					}
-				}
+                }           
 
                 windows.forEach(item => { 
                     item.style.display = 'none'; //закрытие всех окон при нажатии "Далее" (сделано для калькулятора)
@@ -34,6 +25,7 @@ const modals = (state) => {
                 document.body.style.overflow = 'hidden'; //блок прокрутки
                 document.body.style.marginRight = `${scroll}px`; //страница будет смещена вправо на ширину скрола
             });
+            
         });
         close.addEventListener('click', () => {
             modal.style.display = 'none'; //скрытие окна
@@ -68,6 +60,6 @@ const modals = (state) => {
     bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close', false); //вызов ф-ии модал окна калькулятора
     bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
     bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
-    showModalByTime('.popup', 5000);
+    showModalByTime('.popup', 60000);
 };
 export default modals;

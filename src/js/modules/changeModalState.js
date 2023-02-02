@@ -34,7 +34,6 @@ const changeModalState = (state) => { //получаем все типы дан�
                         state[prop] = item.value; //берем из инпута value
                         break;
                 }
-                console.log(state);
             });
 
         });
