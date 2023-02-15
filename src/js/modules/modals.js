@@ -1,6 +1,6 @@
 import calcScroll from "./calcScroll";
 
-const modals = (state) => {
+const modals = () => {
     function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
         const trigger = document.querySelectorAll(triggerSelector), //кнопка вызова окна
               modal = document .querySelector(modalSelector), // модал окно
@@ -49,9 +49,19 @@ const modals = (state) => {
 
     function showModalByTime(selector, time) { //показ окна спустя время
         setTimeout(() => {
+            let anyModalShow; //сейчас undefined, т.е. false
+
+        document.querySelectorAll('[data-modal]').forEach(item => { //выдергиваем модал окна
+            //Условия для показа окна спустя время
+            if (getComputedStyle(item).display !== 'none') { //getComputedStyle - позволяет выдернуть скомпилированный браузером стиль //если св-во display не равно none 
+                anyModalShow = true; // в переменную display записывае block
+            }
+        });
+        if (!anyModalShow) { //если false то показывем окно
             document.querySelector(selector).style.display = 'block';
             document.body.style.overflow = 'hidden';
-        }, time);
+        }
+    }, time);
     }
 
     
