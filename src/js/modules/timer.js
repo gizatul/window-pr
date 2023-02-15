@@ -13,7 +13,8 @@ const timer = (id, deadline) => {
             'minutes': minutes,
             'seconds': seconds,
         };
-    };
+    }
+
     function addZero(num) {
         if (num >= 0 && num < 10) {
             return `0${num}`;
@@ -40,21 +41,15 @@ const timer = (id, deadline) => {
             minutes.innerHTML = addZero(t.minutes);
             seconds.innerHTML = addZero(t.seconds);
 
-        if (t.total <= 0) {
-            days.innerHTML = '00';
-            hours.innerHTML = '00';
-            minutes.innerHTML = '00';
-            seconds.innerHTML = '00';
-
-            clearInterval(timerInterval);
+            if (t.total <= 0) {
+                days.innerHTML = '00';
+                hours.innerHTML = '00';
+                minutes.innerHTML = '00';
+                seconds.innerHTML = '00';
+                clearInterval(timerInterval);
+            }
         }
     }
-}
-    
-        
-    
     setClock(id, deadline);
-
-
 }
 export default timer;

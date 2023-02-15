@@ -1,38 +1,40 @@
 import calcScroll from "./calcScroll";
+
 const images = () => {
-    const imgPopup = document.createElement('div'), // создание модал окна для изображения
-          workSection = document.querySelector('.works'), //секция в кот-й находятся изображения, для последующей обработки в ОС ч/з делегирование
-          bigImage = document.createElement('img'); //создание большого изображения
+    const imgPopup = document.createElement('div'), 
+          workSection = document.querySelector('.works'), 
+          bigImage = document.createElement('img'); 
           scroll = calcScroll();
-          //Дорабатываем модал окно
-          imgPopup.classList.add('popupImg'); //используем уже имеющийся класс popup с полупрозрачной подложкой
-          workSection.appendChild(imgPopup); //в секцию внутрь размещаем модал окно
-          imgPopup.style.cssText = `
-          display:none;
-          justify-content:center;
-          align-items:center;` // стилизуем изображение
           
-          bigImage.style.maxHeight = '90vh';//Высота будет макс 90% от видимой области
-          bigImage.style.maxWidth = '90vw'; //ширина будет макс 90% от видимой области
-          bigImage.classList.add('faded');
+    imgPopup.classList.add('popupImg'); 
+    workSection.appendChild(imgPopup); 
+    imgPopup.style.cssText = `
+    display:none;
+    justify-content:center;
+    align-items:center;` 
+          
+    bigImage.style.maxHeight = '90vh';
+    bigImage.style.maxWidth = '90vw'; 
+    bigImage.classList.add('faded');
 
-          imgPopup.appendChild(bigImage); //в модал окно размещаем изображение
-          //Ф-я для показа рис
-          workSection.addEventListener('click', (e) => {
-            e.preventDefault(); //отмена станд поведения браузера
-            if (e.target && e.target.classList.contains('preview')) { //preview -class у мини рис
-                imgPopup.style.display = 'flex'; //показ модал окна
-            const path = e.target.parentNode.getAttribute('href'); //вытаскиваем содержание href (т.е ссылку на больш рис) родителя preview
-                bigImage.setAttribute('src', path); //устанавливаем ссылку созданному большому рисунку
-                document.body.style.overflow = 'hidden'; //блокировка прокрутки
-                document.body.style.marginRight = `${scroll}px`;
-            }
-            if (e.target && e.target === imgPopup) { //при нажатии на подложку закрываем
-                imgPopup.style.display = 'none';  //
-                document.body.style.overflow = ''; //восстановление прокрутки
-                document.body.style.marginRight = `0px`;
-            }
+    imgPopup.appendChild(bigImage); 
+          
+    workSection.addEventListener('click', (e) => {
+        e.preventDefault(); 
 
-          });
+        if (e.target && e.target.classList.contains('preview')) { 
+            imgPopup.style.display = 'flex'; 
+            const path = e.target.parentNode.getAttribute('href');
+
+            bigImage.setAttribute('src', path); 
+            document.body.style.overflow = 'hidden'; 
+            document.body.style.marginRight = `${scroll}px`;
+        }
+        if (e.target && e.target === imgPopup) { 
+            imgPopup.style.display = 'none';  
+            document.body.style.overflow = ''; 
+            document.body.style.marginRight = `0px`;
+        }
+    });
 }
 export default images;

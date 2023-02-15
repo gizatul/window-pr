@@ -11,18 +11,16 @@ window.addEventListener('DOMContentLoaded', () => {
     let modalState = {
         form: 0,
         type: 'tree',
-    }; //состояние модал окна с калькулятором
-    let deadline = '2023-05-01 00:00:00';
+    };
 
-    changeModalState(modalState); //передаем ссылку на объект modalstate
+    let deadline = '2023-05-26 00:00:00';
+
+    changeModalState(modalState); 
     modals(modalState);
-    tabs('.glazing_slider', '.glazing_block', '.glazing_content', 'active'); //табы для "ОСТЕКЛЕНИЕ БАЛКОНОВ И ЛОДЖИЙ"
-    tabs('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click'); //.decoration_content > div > div - указание на прямых потомков, табы для "отделок"
+    tabs('.glazing_slider', '.glazing_block', '.glazing_content', 'active'); 
+    tabs('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click'); 
     forms(modalState);
     tabs('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
     timer('.container1', deadline);
     images();
-
-
-
 });

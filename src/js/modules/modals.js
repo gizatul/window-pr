@@ -2,72 +2,70 @@ import calcScroll from "./calcScroll";
 
 const modals = () => {
     function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
-        const trigger = document.querySelectorAll(triggerSelector), //кнопка вызова окна
-              modal = document .querySelector(modalSelector), // модал окно
-              close = document.querySelector(closeSelector), // закрытие окна
-              windows = document.querySelectorAll('[data-modal]'), // получаем все модальные окна чтобы их потом закрыть
+        const trigger = document.querySelectorAll(triggerSelector), 
+              modal = document .querySelector(modalSelector), 
+              close = document.querySelector(closeSelector), 
+              windows = document.querySelectorAll('[data-modal]'), 
               scroll = calcScroll();
         
-        
-        modal.classList.add('faded'); //плавное появление модал окон
+        modal.classList.add('faded'); 
               
         trigger.forEach(item => {
             item.addEventListener('click', (e) => {
                 if (e.target) {
-                    e.preventDefault(); // отмена стандартного поведения браузера(если вдруг внутри ссылка, браузер по умол. перезагружает страницу)
+                    e.preventDefault(); 
                 }           
 
                 windows.forEach(item => { 
-                    item.style.display = 'none'; //закрытие всех окон при нажатии "Далее" (сделано для калькулятора)
+                    item.style.display = 'none'; 
                 });
 
-                modal.style.display = 'block'; // появление окна
-                document.body.style.overflow = 'hidden'; //блок прокрутки
-                document.body.style.marginRight = `${scroll}px`; //страница будет смещена вправо на ширину скрола
+                modal.style.display = 'block'; 
+                document.body.style.overflow = 'hidden'; 
+                document.body.style.marginRight = `${scroll}px`; 
             });
-            
         });
+
         close.addEventListener('click', () => {
-            modal.style.display = 'none'; //скрытие окна
-            document.body.style.overflow = ''; //восстановление прокрутки
+            modal.style.display = 'none'; 
+            document.body.style.overflow = ''; 
             windows.forEach(item => { 
-                item.style.display = 'none'; //закрытие всех окон при нажатии на крестик(сделано для калькулятора)
+                item.style.display = 'none'; 
             });
-            document.body.style.marginRight = `0px`; //при появлении скрола будет 0
+            document.body.style.marginRight = `0px`; 
         });
-        modal.addEventListener('click', (e) => { //закрытие при клике на подложку
-            if (e.target === modal && closeClickOverlay) {// Если клик на подложку и параметр true, то ф-я ниже выполнится. closeClickOverlay мы специально искуственно создали чтобы контролировать какие именно окна закрывать с помощью клика на подложку
+
+        modal.addEventListener('click', (e) => { 
+            if (e.target === modal && closeClickOverlay) {
                 windows.forEach(item => { 
-                    item.style.display = 'none'; //закрытие всех окон при нажатии на подложку
+                    item.style.display = 'none'; 
                 });
-                modal.style.display = 'none'; //скрытие окна
-                document.body.style.overflow = ''; //восстановление прокрутки  
-                document.body.style.marginRight = `0px`; //при появлении скрола будет 0
+                modal.style.display = 'none'; 
+                document.body.style.overflow = ''; 
+                document.body.style.marginRight = `0px`; 
             }
         })
     }
 
-    function showModalByTime(selector, time) { //показ окна спустя время
+    function showModalByTime(selector, time) { 
         setTimeout(() => {
-            let anyModalShow; //сейчас undefined, т.е. false
+            let anyModalShow; 
 
-        document.querySelectorAll('[data-modal]').forEach(item => { //выдергиваем модал окна
-            //Условия для показа окна спустя время
-            if (getComputedStyle(item).display !== 'none') { //getComputedStyle - позволяет выдернуть скомпилированный браузером стиль //если св-во display не равно none 
-                anyModalShow = true; // в переменную display записывае block
+            document.querySelectorAll('[data-modal]').forEach(item => { 
+                if (getComputedStyle(item).display !== 'none') { 
+                    anyModalShow = true; 
+                }
+            });
+            if (!anyModalShow) { 
+                document.querySelector(selector).style.display = 'block';
+                document.body.style.overflow = 'hidden';
             }
-        });
-        if (!anyModalShow) { //если false то показывем окно
-            document.querySelector(selector).style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-    }, time);
+        }, time);
     }
-
     
     bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
     bindModal('.phone_link', '.popup', '.popup .popup_close');
-    bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close', false); //вызов ф-ии модал окна калькулятора
+    bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close', false); 
     bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
     bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
     showModalByTime('.popup', 60000);

@@ -15280,16 +15280,12 @@ window.addEventListener('DOMContentLoaded', () => {
   let modalState = {
     form: 0,
     type: 'tree'
-  }; //состояние модал окна с калькулятором
-
-  let deadline = '2023-05-01 00:00:00';
-  Object(_modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__["default"])(modalState); //передаем ссылку на объект modalstate
-
+  };
+  let deadline = '2023-05-26 00:00:00';
+  Object(_modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__["default"])(modalState);
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_1__["default"])(modalState);
-  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active'); //табы для "ОСТЕКЛЕНИЕ БАЛКОНОВ И ЛОДЖИЙ"
-
-  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click'); //.decoration_content > div > div - указание на прямых потомков, табы для "отделок"
-
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
+  Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState);
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
   Object(_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])('.container1', deadline);
@@ -15307,22 +15303,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//Ф-я для подсчета ширины скрола
 function calcScroll() {
-  let div = document.createElement('div'); //блок для подсчета ширины скрола
-
-  div.style.width = '50px'; //чтобы блок был на странице
-
-  div.style.height = '50px'; //чтобы блок был на странице
-
-  div.style.overflowY = 'scroll'; //включаем полосу вертикальной(Y) прокрутки навсегда
-
-  div.style.visibility = 'hidden'; //элемент скроем
-
-  document.body.appendChild(div); //размещаем элемент на страницу
-
-  let scrollWidth = div.offsetWidth - div.clientWidth; //offsetWidth - полная ширина, clietWidth включает padding и главный контент = ширина прокрутки
-
+  let div = document.createElement('div');
+  div.style.width = '50px';
+  div.style.height = '50px';
+  div.style.overflowY = 'scroll';
+  div.style.visibility = 'hidden';
+  document.body.appendChild(div);
+  let scrollWidth = div.offsetWidth - div.clientWidth;
   div.remove();
   return scrollWidth;
 }
@@ -15344,65 +15332,51 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const changeModalState = state => {
-  //получаем все типы данных, кот-е нужны для заполнения объекта
   const windowForm = document.querySelectorAll('.balcon_icons_img'),
         windowWidth = document.querySelectorAll('#width'),
         windowHeight = document.querySelectorAll('#height'),
         windowType = document.querySelectorAll('#view_type'),
-        windowProfile = document.querySelectorAll('.checkbox'); //Валидация ширины и высоты(ввод только цифр)      
-
+        windowProfile = document.querySelectorAll('.checkbox');
   Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('#width');
   Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('#height');
 
   function bindActionToElems(event, elem, prop) {
-    //на опред. элемент(elem) навязывает опред. ОС(event) и записывает в опред. св-во объекта state
     elem.forEach((item, i) => {
       item.addEventListener(event, () => {
         switch (item.nodeName) {
-          //для пониманя нна какой элемент кликнул пользователь
           case "SPAN":
-            state[prop] = i; //выбор формы балкона
-
+            state[prop] = i;
             break;
 
           case "INPUT":
             if (item.getAttribute('type') === 'checkbox') {
-              //если type="checkbox" в верстке 
-              i === 0 ? state[prop] = 'Cold' : state[prop] = 'Warm'; //если i=0 то будет присвоено объекту холод, иначе (т.е. i=1) будет присвоен (тепло)
-
+              i === 0 ? state[prop] = 'Cold' : state[prop] = 'Warm';
               elem.forEach((box, j) => {
-                //ф-я для выбора только одного чекбокса
-                box.checked = false; //каждому чекбоксу устанавливаем снятие галочки
+                box.checked = false;
 
                 if (i == j) {
-                  //когда натыкаемся на тот чекбокс, кот-й чекнул пол-ль
-                  box.checked = true; //то второй чекбокс не отмечаем
+                  box.checked = true;
                 }
               });
             } else {
-              state[prop] = item.value; //берем из инпута value
+              state[prop] = item.value;
             }
 
             break;
 
           case 'SELECT':
-            state[prop] = item.value; //берем из инпута value
-
+            state[prop] = item.value;
             break;
         }
       });
     });
   }
 
-  bindActionToElems('click', windowForm, 'form'); //вызов для сбора порядкого номера  формы балкона
-
-  bindActionToElems('input', windowWidth, 'width'); //вызов ф-ии для сбора значений ширины
-
-  bindActionToElems('input', windowHeight, 'height'); //вызов ф-ии для сбора значений высоты
-
-  bindActionToElems('change', windowType, 'type'); //вызов ф-ии для сбора инфы
-
-  bindActionToElems('change', windowProfile, 'profile'); //вызов ф-ии для сбора инфы
+  bindActionToElems('click', windowForm, 'form');
+  bindActionToElems('input', windowWidth, 'width');
+  bindActionToElems('input', windowHeight, 'height');
+  bindActionToElems('change', windowType, 'type');
+  bindActionToElems('change', windowProfile, 'profile');
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (changeModalState);
@@ -15422,12 +15396,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_string_replace__WEBPACK_IMPORTED_MODULE_0__);
 
 
-//Введение в поле с телефоном только цифр
 const checkNumInputs = selector => {
   const numInputs = document.querySelectorAll(selector);
   numInputs.forEach(item => {
     item.addEventListener('input', () => {
-      item.value = item.value.replace(/\D/, ''); //при введении не цифр ввводится пустая строка
+      item.value = item.value.replace(/\D/, '');
     });
   });
 };
@@ -15451,70 +15424,58 @@ __webpack_require__.r(__webpack_exports__);
 const forms = state => {
   const form = document.querySelectorAll('form'),
         windows = document.querySelectorAll('[data-modal]'),
-        inputs = document.querySelectorAll('input'); //Введение в поле с телефоном только цифр
-
-  Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('input[name="user_phone"]'); //Ф-я для очищения полей
+        inputs = document.querySelectorAll('input');
+  Object(_checkNumInputs__WEBPACK_IMPORTED_MODULE_0__["default"])('input[name="user_phone"]');
 
   const clearInputs = () => {
     inputs.forEach(item => {
       item.value = '';
     });
-  }; //создание объекта с сообщениями
-
+  };
 
   const message = {
     loading: 'Загрузка...',
     success: 'Спасибо! Скоро мы с вами свяжемся!',
     failure: 'Что-то пошло не так...'
-  }; //Создаем ф-ю отправки данных
+  };
 
   const postData = async (url, data) => {
-    //асинхронная ф-я - async
-    document.querySelector('.status').textContent = message.loading; //добавляем плашку о загрузке пока идет обработка запроса
-
+    document.querySelector('.status').textContent = message.loading;
     let res = await fetch(url, {
-      //асинхронная операция await, чтобы JS дождался выполнения операции, т.к. ответ от сервера может идти долго
       method: 'POST',
       body: data
     });
-    return await res.text(); //возврат текстовых данных(в данном случае, тоже ждем окончания операции (await)
+    return await res.text();
   };
 
   form.forEach(item => {
     item.addEventListener('submit', e => {
-      e.preventDefault(); //отмена перезагрузки страницы
-      //Создание блока с статусом запроса
-
+      e.preventDefault();
       let statusMessage = document.createElement('div');
       statusMessage.classList.add('status');
-      item.appendChild(statusMessage); // создание формдаты для отправки на сервер
-
+      item.appendChild(statusMessage);
       const formData = new FormData(item);
 
       if (item.getAttribute('data-calc') === 'end') {
-        //проверка на необходимую нам форму(в данном случае калькулятор) - берем ту форму где кнопка рассчитать стоимость
         for (let key in state) {
-          formData.append(key, state[key]); //добавление (append) к стандартной форме formData(имени телефону) остальных данных с каалькулятора
+          formData.append(key, state[key]);
         }
-      } //Выведение сообщений на страницу
-
+      }
 
       postData('assets/server.php', formData).then(res => {
         console.log(res);
-        statusMessage.textContent = message.success; //плашка об успешности
-      }).catch(() => statusMessage.textContent = message.failure) //плашка о неудаче
-      .finally(() => {
-        clearInputs(); //очищение полей после успешной/неуспешной отправки
-
+        statusMessage.textContent = message.success;
+      }).catch(() => statusMessage.textContent = message.failure).finally(() => {
+        clearInputs();
         setTimeout(() => {
-          statusMessage.remove(); //удаляем сообщение через 10 сек
+          statusMessage.remove();
         }, 10000);
         windows.forEach(item => {
-          item.style.display = 'none'; //закрытие всех окон после отправки/неотправки данных
+          item.style.display = 'none';
         });
 
         for (let key in state) {
-          delete state[key]; //очищение объекта
+          delete state[key];
         }
       });
     });
@@ -15539,52 +15500,33 @@ __webpack_require__.r(__webpack_exports__);
 
 const images = () => {
   const imgPopup = document.createElement('div'),
-        // создание модал окна для изображения
-  workSection = document.querySelector('.works'),
-        //секция в кот-й находятся изображения, для последующей обработки в ОС ч/з делегирование
-  bigImage = document.createElement('img'); //создание большого изображения
-
-  scroll = Object(_calcScroll__WEBPACK_IMPORTED_MODULE_0__["default"])(); //Дорабатываем модал окно
-
-  imgPopup.classList.add('popupImg'); //используем уже имеющийся класс popup с полупрозрачной подложкой
-
-  workSection.appendChild(imgPopup); //в секцию внутрь размещаем модал окно
-
+        workSection = document.querySelector('.works'),
+        bigImage = document.createElement('img');
+  scroll = Object(_calcScroll__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  imgPopup.classList.add('popupImg');
+  workSection.appendChild(imgPopup);
   imgPopup.style.cssText = `
-          display:none;
-          justify-content:center;
-          align-items:center;`; // стилизуем изображение
-
-  bigImage.style.maxHeight = '90vh'; //Высота будет макс 90% от видимой области
-
-  bigImage.style.maxWidth = '90vw'; //ширина будет макс 90% от видимой области
-
+    display:none;
+    justify-content:center;
+    align-items:center;`;
+  bigImage.style.maxHeight = '90vh';
+  bigImage.style.maxWidth = '90vw';
   bigImage.classList.add('faded');
-  imgPopup.appendChild(bigImage); //в модал окно размещаем изображение
-  //Ф-я для показа рис
-
+  imgPopup.appendChild(bigImage);
   workSection.addEventListener('click', e => {
-    e.preventDefault(); //отмена станд поведения браузера
+    e.preventDefault();
 
     if (e.target && e.target.classList.contains('preview')) {
-      //preview -class у мини рис
-      imgPopup.style.display = 'flex'; //показ модал окна
-
-      const path = e.target.parentNode.getAttribute('href'); //вытаскиваем содержание href (т.е ссылку на больш рис) родителя preview
-
-      bigImage.setAttribute('src', path); //устанавливаем ссылку созданному большому рисунку
-
-      document.body.style.overflow = 'hidden'; //блокировка прокрутки
-
+      imgPopup.style.display = 'flex';
+      const path = e.target.parentNode.getAttribute('href');
+      bigImage.setAttribute('src', path);
+      document.body.style.overflow = 'hidden';
       document.body.style.marginRight = `${scroll}px`;
     }
 
     if (e.target && e.target === imgPopup) {
-      //при нажатии на подложку закрываем
-      imgPopup.style.display = 'none'; //
-
-      document.body.style.overflow = ''; //восстановление прокрутки
-
+      imgPopup.style.display = 'none';
+      document.body.style.overflow = '';
       document.body.style.marginRight = `0px`;
     }
   });
@@ -15609,74 +15551,55 @@ __webpack_require__.r(__webpack_exports__);
 const modals = () => {
   function bindModal(triggerSelector, modalSelector, closeSelector, closeClickOverlay = true) {
     const trigger = document.querySelectorAll(triggerSelector),
-          //кнопка вызова окна
-    modal = document.querySelector(modalSelector),
-          // модал окно
-    close = document.querySelector(closeSelector),
-          // закрытие окна
-    windows = document.querySelectorAll('[data-modal]'),
-          // получаем все модальные окна чтобы их потом закрыть
-    scroll = Object(_calcScroll__WEBPACK_IMPORTED_MODULE_0__["default"])();
-    modal.classList.add('faded'); //плавное появление модал окон
-
+          modal = document.querySelector(modalSelector),
+          close = document.querySelector(closeSelector),
+          windows = document.querySelectorAll('[data-modal]'),
+          scroll = Object(_calcScroll__WEBPACK_IMPORTED_MODULE_0__["default"])();
+    modal.classList.add('faded');
     trigger.forEach(item => {
       item.addEventListener('click', e => {
         if (e.target) {
-          e.preventDefault(); // отмена стандартного поведения браузера(если вдруг внутри ссылка, браузер по умол. перезагружает страницу)
+          e.preventDefault();
         }
 
         windows.forEach(item => {
-          item.style.display = 'none'; //закрытие всех окон при нажатии "Далее" (сделано для калькулятора)
+          item.style.display = 'none';
         });
-        modal.style.display = 'block'; // появление окна
-
-        document.body.style.overflow = 'hidden'; //блок прокрутки
-
-        document.body.style.marginRight = `${scroll}px`; //страница будет смещена вправо на ширину скрола
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        document.body.style.marginRight = `${scroll}px`;
       });
     });
     close.addEventListener('click', () => {
-      modal.style.display = 'none'; //скрытие окна
-
-      document.body.style.overflow = ''; //восстановление прокрутки
-
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
       windows.forEach(item => {
-        item.style.display = 'none'; //закрытие всех окон при нажатии на крестик(сделано для калькулятора)
+        item.style.display = 'none';
       });
-      document.body.style.marginRight = `0px`; //при появлении скрола будет 0
+      document.body.style.marginRight = `0px`;
     });
     modal.addEventListener('click', e => {
-      //закрытие при клике на подложку
       if (e.target === modal && closeClickOverlay) {
-        // Если клик на подложку и параметр true, то ф-я ниже выполнится. closeClickOverlay мы специально искуственно создали чтобы контролировать какие именно окна закрывать с помощью клика на подложку
         windows.forEach(item => {
-          item.style.display = 'none'; //закрытие всех окон при нажатии на подложку
+          item.style.display = 'none';
         });
-        modal.style.display = 'none'; //скрытие окна
-
-        document.body.style.overflow = ''; //восстановление прокрутки  
-
-        document.body.style.marginRight = `0px`; //при появлении скрола будет 0
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        document.body.style.marginRight = `0px`;
       }
     });
   }
 
   function showModalByTime(selector, time) {
-    //показ окна спустя время
     setTimeout(() => {
-      let anyModalShow; //сейчас undefined, т.е. false
-
+      let anyModalShow;
       document.querySelectorAll('[data-modal]').forEach(item => {
-        //выдергиваем модал окна
-        //Условия для показа окна спустя время
         if (getComputedStyle(item).display !== 'none') {
-          //getComputedStyle - позволяет выдернуть скомпилированный браузером стиль //если св-во display не равно none 
-          anyModalShow = true; // в переменную display записывае block
+          anyModalShow = true;
         }
       });
 
       if (!anyModalShow) {
-        //если false то показывем окно
         document.querySelector(selector).style.display = 'block';
         document.body.style.overflow = 'hidden';
       }
@@ -15685,8 +15608,7 @@ const modals = () => {
 
   bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
   bindModal('.phone_link', '.popup', '.popup .popup_close');
-  bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close', false); //вызов ф-ии модал окна калькулятора
-
+  bindModal('.popup_calc_btn', '.popup_calc', '.popup_calc_close', false);
   bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
   bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
   showModalByTime('.popup', 60000);
@@ -15712,7 +15634,7 @@ __webpack_require__.r(__webpack_exports__);
 const tabs = (headerSelector, tabSelector, contentSelector, activeClass, display = 'block') => {
   const header = document.querySelector(headerSelector),
         tab = document.querySelectorAll(tabSelector),
-        content = document.querySelectorAll(contentSelector); //Ф-я скрытия контента и снятие активности класса
+        content = document.querySelectorAll(contentSelector);
 
   function hideTabContent() {
     content.forEach(item => {
@@ -15721,25 +15643,18 @@ const tabs = (headerSelector, tabSelector, contentSelector, activeClass, display
     tab.forEach(item => {
       item.classList.remove(activeClass);
     });
-  } //Ф-я показа контента и добавления активного класса
-
+  }
 
   function showTabContent(i = 0) {
-    content[i].style.display = display; //по умол будет display=block
-
+    content[i].style.display = display;
     tab[i].classList.add(activeClass);
-  } //Иницилизируем ф-ии
-
+  }
 
   hideTabContent();
-  showTabContent(); //Отслеживание на какой таб нажал пользователь
-
+  showTabContent();
   header.addEventListener('click', e => {
-    if (e.target && (e.target.classList.contains(tabSelector.replace(/\./, "")) || //убираем точку с помощью регулярного выражения замены(replace)
-    e.target.parentNode.classList.contains(tabSelector.replace(/\./, "")))) {
-      //*1
+    if (e.target && (e.target.classList.contains(tabSelector.replace(/\./, "")) || e.target.parentNode.classList.contains(tabSelector.replace(/\./, "")))) {
       tab.forEach((item, i) => {
-        //Определение порядка на который кликнули, item-каждый отдельный элемент, кот-й перебираем
         if (e.target == item || e.target.parentNode == item) {
           hideTabContent();
           showTabContent(i);
@@ -15750,7 +15665,6 @@ const tabs = (headerSelector, tabSelector, contentSelector, activeClass, display
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (tabs);
-/*1 В переменной target находится объект события - e, который приходит при клике на header (то есть на шапку табов) и мы проверяем, есть ли у этой цели на которую кликнули (target) класс tabSelector, в случае с блоком таба у него этот селектор будет, но ведь мы можем нажать и на просто картинку и на описание внутри самого блока таба и в таком случае нужно проверить их родителя, есть ли у него класс tabSelector) ведь по-факту картинка или описание таба не имеют класса tabSelector*/
 
 /***/ }),
 
@@ -15778,8 +15692,6 @@ const timer = (id, deadline) => {
       'seconds': seconds
     };
   }
-
-  ;
 
   function addZero(num) {
     if (num >= 0 && num < 10) {

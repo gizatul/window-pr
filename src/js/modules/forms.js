@@ -1,74 +1,69 @@
 import checkNumInputs from "./checkNumInputs";
 
 const forms = (state) => {
-
     const form = document.querySelectorAll('form'),
           windows = document.querySelectorAll('[data-modal]'),
           inputs = document.querySelectorAll('input');
-    
-    //Введение в поле с телефоном только цифр
+        
     checkNumInputs('input[name="user_phone"]');
-
-    //Ф-я для очищения полей
+    
     const clearInputs = () => {
         inputs.forEach(item => {
             item.value = '';
         });
     }
 
-    //создание объекта с сообщениями
     const message = { 
         loading: 'Загрузка...',
         success: 'Спасибо! Скоро мы с вами свяжемся!',
         failure: 'Что-то пошло не так...',
     };
-    //Создаем ф-ю отправки данных
-    const postData = async (url, data) => { //асинхронная ф-я - async
-        document.querySelector('.status').textContent = message.loading; //добавляем плашку о загрузке пока идет обработка запроса
-        let res = await fetch(url, { //асинхронная операция await, чтобы JS дождался выполнения операции, т.к. ответ от сервера может идти долго
+    
+    const postData = async (url, data) => { 
+        document.querySelector('.status').textContent = message.loading; 
+        let res = await fetch(url, { 
             method: 'POST',
             body: data,
         });
-        return await res.text(); //возврат текстовых данных(в данном случае, тоже ждем окончания операции (await)
+        return await res.text(); 
     };
 
     form.forEach(item => {
         item.addEventListener('submit', (e) => {
-            e.preventDefault(); //отмена перезагрузки страницы
-            //Создание блока с статусом запроса
+            e.preventDefault(); 
+            
             let statusMessage = document.createElement('div');
+
             statusMessage.classList.add('status');
             item.appendChild(statusMessage);
-            // создание формдаты для отправки на сервер
+            
             const formData = new FormData(item);
 
-            if (item.getAttribute('data-calc') === 'end') {  //проверка на необходимую нам форму(в данном случае калькулятор) - берем ту форму где кнопка рассчитать стоимость
+            if (item.getAttribute('data-calc') === 'end') {  
                 for (let key in state) {
-                    formData.append(key, state[key]); //добавление (append) к стандартной форме formData(имени телефону) остальных данных с каалькулятора
+                    formData.append(key, state[key]); 
                 }
-                
             }
-            //Выведение сообщений на страницу
+            
             postData('assets/server.php', formData)
                 .then(res => {
                     console.log(res);
-                    statusMessage.textContent = message.success; //плашка об успешности
+                    statusMessage.textContent = message.success; 
                 })
-                .catch(() => statusMessage.textContent = message.failure) //плашка о неудаче
+                .catch(() => statusMessage.textContent = message.failure) 
                 .finally(() => {
-                    clearInputs(); //очищение полей после успешной/неуспешной отправки
+                    clearInputs(); 
                     setTimeout(() => {
-                        statusMessage.remove(); //удаляем сообщение через 10 сек
+                        statusMessage.remove(); 
                     }, 10000);
                     windows.forEach(item => {
-                        item.style.display = 'none'; //закрытие всех окон после отправки/неотправки данных
+                        item.style.display = 'none'; 
                     });
                     for (let key in state) {
-                        delete state[key]; //очищение объекта
+                        delete state[key]; 
                     }
                 }); 
         });
     });
 };
 export default forms;
-
